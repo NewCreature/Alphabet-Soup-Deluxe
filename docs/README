@@ -1,0 +1,47 @@
+Alphabet Soup
+-------------
+
+Alphabet Soup is a twist on the classic snake game. Complete words to score
+points. Your goal is to get as many points as possible before crashing into a
+wall or yourself.
+
+This version of the game was built for Resurrection Hack 2018. The goal was to
+get the game up and running on modern systems using Allegro 5. If you are
+reading this, then you have downloaded the competition version of the game.
+There may or may not be newer versions of the game available on our web site
+(http://www.t3-i.com).
+
+
+Installation
+------------
+
+This version of the game is distributed as source code. The game was made using
+T3F, so it should compile without too much trouble on Windows, MacOS, and
+Linux if you have Allegro 5 set up. Change to the 'src' directory and run
+'make' to build the game. Switch to the 'bin' directory and run
+'alphabet-soup-dx' to launch the game.
+
+
+Getting Started
+---------------
+
+The game starts off with a title screen. Pressing enter will bring up the
+game's main menu. From there, you can select your game options and start the
+game.
+
+
+Playing the Game
+----------------
+
+Use the arrow keys to turn your worm in the direction you want to go. The goal
+is to complete the word that is shown on the bottom of the screen (the word
+will not be shown if you are playing Blind Worm mode). Once you make the word,
+points will be added and a new word will be selected from the dictionary.
+
+Survive as long as you can and try to get the high score.
+
+
+Contacting Us
+-------------
+
+E-Mail: care@t3-i.com
