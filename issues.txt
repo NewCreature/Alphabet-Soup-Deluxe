@@ -1,7 +1,11 @@
 Alphabet Soup Deluxe Issues
 ---------------------------
 
-[ ]Change NCD Games to T^3 on can texture.
+[X]Fix position of points text.
+
+[X]Save configuration settings in proper location.
+
+   [X]We should probably just add them to t3f_config.
 
 [X]Fix T3F_FONT rendering for non-outlined fonts.
 
@@ -9,7 +13,20 @@ Alphabet Soup Deluxe Issues
 
 [X]Fix incorrect transparency in soup can texture.
 
-[ ]Add smooth transition to start and exit.
+[ ]Optimize 3D can rendering by precalculating and storing the results of
+   complex math oparations.
+
+[ ]Overhaul graphics.
+
+   [ ]Use photos and clay models for background elements and sprites.
+
+   [ ]Add a bit of randomness to the soup letters to give them a more organic
+      look.
+
+   [ ]Consider using clay models for the soup letters.
+
+[ ]Make all transitions smooth. Objects that move should decelerate to their
+   final destination.
 
 [ ]Make objects that enter the scene do so from the far edge of the screen.
 
@@ -17,14 +34,8 @@ Alphabet Soup Deluxe Issues
       the top and bottom also need to check that they are past the edge of the
 	  actual screen, not just the virtual display.
 
-[X]Fix position of points text.
-
-[ ]Look into making the worm move smoothly.
-
-[X]Save configuration settings in proper location.
-
-   [X]We should probably just add them to t3f_config.
-
 [ ]Autodetect the best video mode to start in (4:3 aspect ratio). We should
    avoid forcing a specific video mode at start since we want to remember the
    user's last settings.
+
+[ ]Change NCD Games to T^3 on can texture.
