@@ -37,7 +37,7 @@ typedef struct
 
 	int type;
 	int ox, oy;
-	void(*left_proc)(), (*right_proc)(), (*enter_proc)();
+	void(*left_proc)(void *), (*right_proc)(void *), (*enter_proc)(void *);
 	T3F_FONT * font;
 	void * data;
 	char * help;

@@ -275,10 +275,10 @@ void config_init(void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	memset(&app->menu, sizeof(GMENU), 0);
+	memset(&app->menu, 0, sizeof(GMENU));
 
 	/* set up menu */
-	memset(&app->menu, sizeof(GMENU), 0);
+	memset(&app->menu, 0, sizeof(GMENU));
 	app->menu.item[0].type = MENU_ITEM_TYPE_TEXT;
 	app->menu.item[0].data = "Configure";
 	app->menu.item[0].ox = 0;
@@ -340,7 +340,7 @@ void menu_init(void * data)
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
 	/* set up menu */
-	memset(&app->menu, sizeof(GMENU), 0);
+	memset(&app->menu, 0, sizeof(GMENU));
 	app->menu.item[0].type = MENU_ITEM_TYPE_TEXT;
 	app->menu.item[0].data = "Options";
 	app->menu.item[0].ox = 0;
@@ -579,17 +579,17 @@ void menu_logic(void * data)
 			}
 			if(t3f_key[ALLEGRO_KEY_LEFT] && app->menu.item[app->menu.selected].left_proc)
 			{
-				app->menu.item[app->menu.selected].left_proc();
+				app->menu.item[app->menu.selected].left_proc(data);
 				t3f_key[ALLEGRO_KEY_LEFT] = 0;
 			}
 			if(t3f_key[ALLEGRO_KEY_RIGHT] && app->menu.item[app->menu.selected].right_proc)
 			{
-				app->menu.item[app->menu.selected].right_proc();
+				app->menu.item[app->menu.selected].right_proc(data);
 				t3f_key[ALLEGRO_KEY_RIGHT] = 0;
 			}
 			if(t3f_key[ALLEGRO_KEY_ENTER] && app->menu.item[app->menu.selected].enter_proc)
 			{
-				app->menu.item[app->menu.selected].enter_proc();
+				app->menu.item[app->menu.selected].enter_proc(data);
 				t3f_key[ALLEGRO_KEY_ENTER] = 0;
 			}
 			break;
@@ -619,17 +619,17 @@ void menu_logic(void * data)
 			}
 			if(t3f_key[ALLEGRO_KEY_LEFT] && app->menu.item[app->menu.selected].left_proc)
 			{
-				app->menu.item[app->menu.selected].left_proc();
+				app->menu.item[app->menu.selected].left_proc(data);
 				t3f_key[ALLEGRO_KEY_LEFT] = 0;
 			}
 			if(t3f_key[ALLEGRO_KEY_RIGHT] && app->menu.item[app->menu.selected].right_proc)
 			{
-				app->menu.item[app->menu.selected].right_proc();
+				app->menu.item[app->menu.selected].right_proc(data);
 				t3f_key[ALLEGRO_KEY_RIGHT] = 0;
 			}
 			if(t3f_key[ALLEGRO_KEY_ENTER] && app->menu.item[app->menu.selected].enter_proc)
 			{
-				app->menu.item[app->menu.selected].enter_proc();
+				app->menu.item[app->menu.selected].enter_proc(data);
 				t3f_key[ALLEGRO_KEY_ENTER] = 0;
 			}
 			break;
