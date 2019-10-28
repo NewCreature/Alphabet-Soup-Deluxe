@@ -21,7 +21,10 @@ void app_logic(void * data)
 		}
 		case STATE_MENU:
 		{
-			menu_logic(app);
+			if(!t3f_key[ALLEGRO_KEY_S])
+			{
+				menu_logic(app);
+			}
 			break;
 		}
 		case STATE_SCORES:

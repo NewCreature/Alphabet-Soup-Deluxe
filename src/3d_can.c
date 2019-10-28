@@ -4,7 +4,10 @@
 AS_3D_CAN * as_create_3d_can(ALLEGRO_BITMAP * face_texture, ALLEGRO_BITMAP * top_texture, ALLEGRO_BITMAP * bottom_texture, float width, float height)
 {
 	AS_3D_CAN * cp;
+	float angle = 0.0 + ALLEGRO_PI / 16.0;
+	float v_angle = (ALLEGRO_PI - (2.0 * (ALLEGRO_PI / 16.0))) / width;
 	int size;
+	int i;
 
 	cp = malloc(sizeof(AS_3D_CAN));
 	if(!cp)
@@ -23,6 +26,30 @@ AS_3D_CAN * as_create_3d_can(ALLEGRO_BITMAP * face_texture, ALLEGRO_BITMAP * top
 		goto fail;
 	}
 	memset(cp->face_vertex, 0, size);
+
+	cp->face_angle_cos = malloc(sizeof(float) * (size + 1));
+	if(!cp->face_angle_cos)
+	{
+		goto fail;
+	}
+	angle = 0.0 + ALLEGRO_PI / 16.0;
+	for(i = 0; i < size + 1; i++)
+	{
+		cp->face_angle_cos[i] = cos(angle);
+		angle += v_angle;
+	}
+
+	cp->face_angle_z = malloc(sizeof(float) * (size + 1));
+	if(!cp->face_angle_z)
+	{
+		goto fail;
+	}
+	angle = 0.0 + ALLEGRO_PI / 16.0;
+	for(i = 0; i < size + 1; i++)
+	{
+		cp->face_angle_z[i] = cos(angle + ALLEGRO_PI / 2.0) * (width / 2.0);
+		angle += v_angle;
+	}
 
 	cp->top_vertex = malloc(sizeof(ALLEGRO_VERTEX) * 130);
 	if(!cp->top_vertex)
@@ -52,6 +79,14 @@ void as_destroy_3d_can(AS_3D_CAN * cp)
 {
 	if(cp)
 	{
+		if(cp->face_angle_z)
+		{
+			free(cp->face_angle_z);
+		}
+		if(cp->face_angle_cos)
+		{
+			free(cp->face_angle_cos);
+		}
 		if(cp->face_vertex)
 		{
 			free(cp->face_vertex);
@@ -68,7 +103,7 @@ void as_destroy_3d_can(AS_3D_CAN * cp)
 	}
 }
 
-static void make_quad(float cx, float y, float oz, int width, int height, int section, float angle, float v_angle, ALLEGRO_VERTEX * vertex)
+static void make_quad(float cx, float y, float oz, int width, int height, int section, float angle, float v_angle, ALLEGRO_VERTEX * vertex, float * a_cos, float * a_z)
 {
 	ALLEGRO_COLOR color;
 	float c;
@@ -77,8 +112,6 @@ static void make_quad(float cx, float y, float oz, int width, int height, int se
 	float final_shade;
 	float fore_portion = width / 4;
 	float aft_portion = width - fore_portion;
-	float a_cos[2];
-	float z[2];
 	float half_width = width / 2;
 
 	/* calculate color */
@@ -95,34 +128,28 @@ static void make_quad(float cx, float y, float oz, int width, int height, int se
 		color = al_map_rgb_f(final_shade, final_shade, final_shade);
 	}
 
-	/* precaculate some values */
-	a_cos[0] = cos(angle);
-	a_cos[1] = cos(angle + v_angle);
-	z[0] = oz + cos(angle + ALLEGRO_PI / 2.0) * half_width;
-	z[1] = oz + cos(angle + v_angle + ALLEGRO_PI / 2.0) * half_width;
-
-	vertex[0].x = t3f_project_x(cx - half_width * a_cos[0], z[0]);
-	vertex[0].y = t3f_project_y(y, z[0]);
+	vertex[0].x = t3f_project_x(cx - half_width * a_cos[section], oz + a_z[section]);
+	vertex[0].y = t3f_project_y(y, oz + a_z[section]);
 	vertex[0].z = 0;
 	vertex[0].color = color;
-	vertex[1].x = t3f_project_x(cx - half_width * a_cos[0], z[0]);
-	vertex[1].y = t3f_project_y(y + height - 1, z[0]);
+	vertex[1].x = t3f_project_x(cx - half_width * a_cos[section], oz + a_z[section]);
+	vertex[1].y = t3f_project_y(y + height - 1, oz + a_z[section]);
 	vertex[1].z = 0;
 	vertex[1].color = color;
-	vertex[2].x = t3f_project_x(cx - half_width * a_cos[1], z[1]);
-	vertex[2].y = t3f_project_y(y, z[0]);
+	vertex[2].x = t3f_project_x(cx - half_width * a_cos[section + 1], oz + a_z[section + 1]);
+	vertex[2].y = t3f_project_y(y, oz + a_z[section]);
 	vertex[2].z = 0;
 	vertex[2].color = color;
-	vertex[3].x = t3f_project_x(cx - half_width * a_cos[1], z[1]);
-	vertex[3].y = t3f_project_y(y, z[0]);
+	vertex[3].x = t3f_project_x(cx - half_width * a_cos[section + 1], oz + a_z[section + 1]);
+	vertex[3].y = t3f_project_y(y, oz + a_z[section]);
 	vertex[3].z = 0;
 	vertex[3].color = color;
-	vertex[4].x = t3f_project_x(cx - half_width * a_cos[0], z[0]);
-	vertex[4].y = t3f_project_y(y + height - 1, z[0]);
+	vertex[4].x = t3f_project_x(cx - half_width * a_cos[section], oz + a_z[section]);
+	vertex[4].y = t3f_project_y(y + height - 1, oz + a_z[section]);
 	vertex[4].z = 0;
 	vertex[4].color = color;
-	vertex[5].x = t3f_project_x(cx - half_width * a_cos[1], z[1]);
-	vertex[5].y = t3f_project_y(y + height - 1, z[0]);
+	vertex[5].x = t3f_project_x(cx - half_width * a_cos[section + 1], oz + a_z[section + 1]);
+	vertex[5].y = t3f_project_y(y + height - 1, oz + a_z[section]);
 	vertex[5].z = 0;
 	vertex[5].color = color;
 }
@@ -190,7 +217,7 @@ void as_move_3d_can(AS_3D_CAN * cp, float cx, float y, float z, int texture_pos)
 		v_angle = (ALLEGRO_PI - (2.0 * (ALLEGRO_PI / 16.0))) / cp->width;
 		for(i = 0; i < cp->width; i++)
 		{
-			make_quad(cp->cx, cp->y, cp->z, cp->width, cp->height, i, angle, v_angle, &cp->face_vertex[i * 6]);
+			make_quad(cp->cx, cp->y, cp->z, cp->width, cp->height, i, angle, v_angle, &cp->face_vertex[i * 6], cp->face_angle_cos, cp->face_angle_z);
 			angle += v_angle;
 		}
 		update_end(cp->top_vertex, 130, cp->cx, cp->y, cp->z, cp->width);

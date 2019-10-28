@@ -12,6 +12,8 @@ typedef struct
 	ALLEGRO_VERTEX * face_vertex;
 	ALLEGRO_VERTEX * top_vertex;
 	ALLEGRO_VERTEX * bottom_vertex;
+	float * face_angle_cos;
+	float * face_angle_z;
 	float width;
 	float height;
 
